@@ -8,6 +8,7 @@ import DayNightMode, { DayNightContext } from './component/DayNightMode';
 import { dayNightType, selecetdInputArray } from './constant';
 import { mathameticalOperation } from './operartion';
 import ShowWarning from './component/ShowWarning';
+import History from './component/History';
 function App() {
 
   const [dayNight, setDayNight] = useState<dayNightType>({
@@ -16,7 +17,12 @@ function App() {
   });
   const [answer, setAnswer] = useState<number>(0);
   const [selectedData, setData] = useState<selecetdInputArray>([0]);
-  const [warn, setWarn] = useState<string>('')
+  const [warn, setWarn] = useState<string>('');
+  const [history_data, setHistoryData] = useState<[{
+    question: selecetdInputArray,
+    ans: number
+  }] | []>([]);
+  const [popuStatus, setPopupStatus] = useState<boolean>(false)
 
   const forCommonOpreation = (): [
     selecetdInputArray,
@@ -38,7 +44,7 @@ function App() {
     ) {
       fresh_selected_data.pop();
     } else if(lastElement === ')') {
-      fresh_selected_data = [...fresh_selected_data, ' x ']
+      fresh_selected_data = [...fresh_selected_data, ' \u00D7 ']
     }
     setData([...fresh_selected_data, data]);
   }
@@ -79,19 +85,36 @@ function App() {
     }
   }
 
+  const handlePreviousOpreations = (data:selecetdInputArray) => {
+    setData([...data])
+  }
+
   const handleFinalAction = () => {
-    const { message, result } = mathameticalOperation(selectedData)
+    let _selectedData = [...selectedData];
+    const { message, result } = mathameticalOperation(_selectedData)
     if(message === 'sucess_full'){
       setAnswer(result);
-      setData([0])
+      setData([0]);
+      setHistoryData([
+        {
+          question: [..._selectedData],
+          ans: result
+        },
+        ...history_data as unknown as []
+      ]);
     }else {
       setWarn('You are missing something');
       setTimeout(() => setWarn(''), 1000)
     }
   }
 
+  const handleHistoryPopup = () => {
+    history_data.length && setPopupStatus(prev => !prev);
+  }
+
   const {background, color } = dayNight;
-  const is_nigt_mode = dayNight?.background === 'black'
+  const is_nigt_mode = dayNight?.background === 'black';
+
   return (
     <DayNightContext.Provider value={[dayNight,setDayNight]}>
       <div className='app-class' style={{backgroundColor: background, color}}>
@@ -101,28 +124,99 @@ function App() {
             warn && <ShowWarning message={warn}/>
           }
         </div>
-        <Screen selectedData={selectedData} answer={answer}/>
+        {
+          popuStatus && <History 
+            handlePreviousAction={handlePreviousOpreations}
+            openClose={setPopupStatus}
+            popupStatus={popuStatus}
+            data={history_data} 
+          /> 
+        }
+        <Screen handleHistoryPopup={handleHistoryPopup} selectedData={selectedData} answer={answer}/>
         <div className='input-field'>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={'('} handleInputAction={handleSmallBracketAction}/>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={')'} handleInputAction={handleSmallBracketAction}/>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' % '} handleInputAction={handleInputAction}/>
-            <ActionButton dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={'CE'} action={handleActionDelete}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={7} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={8} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={9} handleInput={handleInput}/>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' \u00F7 '} handleInputAction={handleInputAction}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={4} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={5} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={6} handleInput={handleInput}/>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' \u00D7 '} handleInputAction={handleInputAction}/>  
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={1} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={2} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={3} handleInput={handleInput}/>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' \u2212 '} handleInputAction={handleInputAction}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={0} handleInput={handleInput}/>
-            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={'.'} handleInput={handleInput}/>
-            <ActionButton dynamic_class={'submit-action'} data={'='} action={handleFinalAction}/>
-            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' + '} handleInputAction={handleInputAction}/>
+            <InputAction 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'}
+              data={'('} handleInputAction={handleSmallBracketAction}
+            />
+            <InputAction 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'}
+              data={')'}
+              handleInputAction={handleSmallBracketAction}
+            />
+            <InputAction 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' % '}
+              handleInputAction={handleInputAction}
+            />
+            <ActionButton 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'}
+              data={'CE'} action={handleActionDelete}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={7} handleInput={handleInput}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={8} handleInput={handleInput}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={9} handleInput={handleInput}
+            />
+            <InputAction 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'}
+              data={' \u00F7 '} handleInputAction={handleInputAction}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={4} handleInput={handleInput}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={5} handleInput={handleInput}
+            />
+            <InputData
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={6} handleInput={handleInput}
+            />
+            <InputAction
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} 
+              data={' \u00D7 '}
+              handleInputAction={handleInputAction}
+            />  
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={1} handleInput={handleInput}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={2} handleInput={handleInput}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={3} handleInput={handleInput}
+            />
+            <InputAction 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'}
+              data={' \u2212 '} handleInputAction={handleInputAction}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={0}
+              handleInput={handleInput}
+            />
+            <InputData 
+              dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'}
+              data={'.'} handleInput={handleInput}
+            />
+            <ActionButton 
+              dynamic_class={'submit-action'}
+              data={'='} action={handleFinalAction}
+            />
+            <InputAction 
+              dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} 
+              data={' + '}
+              handleInputAction={handleInputAction}
+            />
         </div>
       </div>
     </DayNightContext.Provider>

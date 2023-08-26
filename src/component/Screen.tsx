@@ -4,7 +4,15 @@ import { selecetdInputArray } from '../constant';
 import { useContext } from 'react';
 import { DayNightContext } from './DayNightMode';
 
-const Screen = ({selectedData, answer}: {selectedData: selecetdInputArray, answer: number}) => {
+const Screen = ({
+    selectedData,
+    answer,
+    handleHistoryPopup
+}: {
+    selectedData: selecetdInputArray,
+    answer: number,
+    handleHistoryPopup: () => void
+}) => {
     const { prev_action } = image;
     const [day_night] = useContext(DayNightContext)
 
@@ -13,7 +21,7 @@ const Screen = ({selectedData, answer}: {selectedData: selecetdInputArray, answe
     return (
         <div className={`screen-container ${is_nigt_mode ? 'night-mode-on' : ''}`}>
             <div className='completed-section-ans'>
-            <img src={prev_action} alt="previous action" />
+            <img src={prev_action} alt="previous action" onClick={handleHistoryPopup} />
             <div>Ans = {answer}</div>
             </div>
             <div className='selected-data'>

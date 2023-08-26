@@ -1,0 +1,39 @@
+.history-container {
+    width: 60%;
+    border: 1px solid #ccc1c1;
+    top: 107px;
+    left: 127px;
+    padding: 18px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.28);
+    border-collapse: separate;
+    max-width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    z-index: 3;
+    position: absolute;
+    background-color: #fff;
+    & img {
+        width: 4%;
+    }
+    & .history {
+        & .hisotry-row {
+            display: flex;
+            width: fit-content;
+            gap: 15px;
+            margin: 13px 0 13px 0px;
+            & div {
+                border: 1px solid #dcd9d9;
+                padding: 5px 7px;
+                border-radius: 5px;
+                letter-spacing: 0px;
+                color: #388dc4;
+            }
+            & div:hover {
+                background: whitesmoke;
+            }
+        }
+    }
+}
+.daryk-mode {
+    background: #191818;
+}

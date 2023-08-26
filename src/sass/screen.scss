@@ -13,7 +13,8 @@
     & .completed-section-ans {
         display: flex;
         & img {
-            width: 4%;
+            width: 4%;  
+            cursor: pointer;
         }
         & div {
             width: 96%;

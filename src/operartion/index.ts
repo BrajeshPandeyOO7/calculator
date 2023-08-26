@@ -20,7 +20,6 @@ export const mathameticalOperation = (inp: selecetdInputArray): {
             valid_mathametical_operations.push(x);
         });
         const join_value = valid_mathametical_operations.join('');
-
         const mathametical_result = eval(join_value)
 
         return {
