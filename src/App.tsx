@@ -91,6 +91,7 @@ function App() {
   }
 
   const {background, color } = dayNight;
+  const is_nigt_mode = dayNight?.background === 'black'
   return (
     <DayNightContext.Provider value={[dayNight,setDayNight]}>
       <div className='app-class' style={{backgroundColor: background, color}}>
@@ -102,26 +103,26 @@ function App() {
         </div>
         <Screen selectedData={selectedData} answer={answer}/>
         <div className='input-field'>
-            <InputAction data={'('} handleInputAction={handleSmallBracketAction}/>
-            <InputAction data={')'} handleInputAction={handleSmallBracketAction}/>
-            <InputAction data={' % '} handleInputAction={handleInputAction}/>
-            <ActionButton data={'CE'} action={handleActionDelete}/>
-            <InputData data={7} handleInput={handleInput}/>
-            <InputData data={8} handleInput={handleInput}/>
-            <InputData data={9} handleInput={handleInput}/>
-            <InputAction data={' \u00F7 '} handleInputAction={handleInputAction}/>
-            <InputData data={4} handleInput={handleInput}/>
-            <InputData data={5} handleInput={handleInput}/>
-            <InputData data={6} handleInput={handleInput}/>
-            <InputAction data={' \u00D7 '} handleInputAction={handleInputAction}/>  
-            <InputData data={1} handleInput={handleInput}/>
-            <InputData data={2} handleInput={handleInput}/>
-            <InputData data={3} handleInput={handleInput}/>
-            <InputAction data={' \u2212 '} handleInputAction={handleInputAction}/>
-            <InputData data={0} handleInput={handleInput}/>
-            <InputData data={'.'} handleInput={handleInput}/>
-            <ActionButton data={'='} action={handleFinalAction}/>
-            <InputAction data={' + '} handleInputAction={handleInputAction}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={'('} handleInputAction={handleSmallBracketAction}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={')'} handleInputAction={handleSmallBracketAction}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' % '} handleInputAction={handleInputAction}/>
+            <ActionButton dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={'CE'} action={handleActionDelete}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={7} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={8} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={9} handleInput={handleInput}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' \u00F7 '} handleInputAction={handleInputAction}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={4} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={5} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={6} handleInput={handleInput}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' \u00D7 '} handleInputAction={handleInputAction}/>  
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={1} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={2} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={3} handleInput={handleInput}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' \u2212 '} handleInputAction={handleInputAction}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={0} handleInput={handleInput}/>
+            <InputData dynamic_class={is_nigt_mode ? 'numeric-act-night' : 'numeric-act'} data={'.'} handleInput={handleInput}/>
+            <ActionButton dynamic_class={'submit-action'} data={'='} action={handleFinalAction}/>
+            <InputAction dynamic_class={ is_nigt_mode ? 'opreator-act-night' : 'operator-act'} data={' + '} handleInputAction={handleInputAction}/>
         </div>
       </div>
     </DayNightContext.Provider>
