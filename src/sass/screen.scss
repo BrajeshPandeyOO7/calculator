@@ -1,0 +1,31 @@
+.screen-container {
+    width: 90%;
+    border: 1px solid #59a0a7;
+    height: 55px;
+    margin: auto;
+    border-radius: 7px;
+    box-shadow: inset 0px 0px 5px #d8d9d9;
+    padding: 12px 9px;
+    position: relative;
+    & .previous-action {
+        width: 25px;
+    }
+    & .completed-section-ans {
+        display: flex;
+        & img {
+            width: 4%;
+        }
+        & div {
+            width: 96%;
+            text-align: right;
+        }
+    }
+    & .selected-data {
+        position: absolute;
+        bottom: 9px;
+        width: 97%;
+        height: 40%;
+        text-align: right;
+        font-size: 30px;
+    }
+}
