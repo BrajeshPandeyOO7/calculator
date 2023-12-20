@@ -24,10 +24,11 @@
     & .selected-data {
         position: absolute;
         bottom: 9px;
-        width: 97%;
+        width: inherit;
         height: 40%;
         text-align: right;
         font-size: 30px;
+        right: 9px;
     }
 }
 
